@@ -1,0 +1,11 @@
+import { handleActions } from 'redux-actions';
+
+import {{ properCase name }}State from './{{ properCase name }}State';
+
+
+const initialState = new {{ properCase name }}State({});
+
+
+export default handleActions({
+
+}, initialState);

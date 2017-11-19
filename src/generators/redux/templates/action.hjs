@@ -1,0 +1,24 @@
+export const {{ constantCase actionName }} = `${NAME}/{{ constantCase actionName }}`;
+/**
+* {{ actionDescription }}
+*
+{{#each actionInput}}
+* @param {{this}}
+{{/each}}
+* @returns { {{ actionOutput }} }
+*/
+export function {{ camelCase actionName }}({{#each actionInput}}{{#if @index}} {{/if}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
+{{#if isAsync}}
+    return (dispatch, getState, { fetch }) => {
+        return fetch({
+            url: '',
+            actionType: {{ constantCase actionName }}
+        });
+    };
+{{else}}
+    return createAction({{ constantCase actionName }}, arguments);
+{{/if}}
+}
+
+
+/*--(DO NOT REMOVE)generate action here(DO NOT REMOVE)--*/

@@ -1,0 +1,22 @@
+import 'react-native';
+import React from 'react';
+import {{ properCase componentName }} from '../{{ properCase componentName}}';
+
+// Note: test renderer must be required after react-native.
+import renderer from 'react-test-renderer';
+
+// isolate the component
+jest.mock('src/components/index.js');
+jest.mock('src/redux/actions.js');
+
+
+describe('component: {{ properCase componentName }}', () => {
+
+    it('matches snapshot', () => {
+        const tree = renderer.create(
+            <{{ properCase componentName }}/>
+        );
+
+        expect(tree).toMatchSnapshot();
+    });
+});

@@ -1,0 +1,5 @@
+import createAction from '../../util/createAction';
+import NAME from './name';
+
+
+/*--(DO NOT REMOVE)generate action here(DO NOT REMOVE)--*/

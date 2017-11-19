@@ -1,0 +1,15 @@
+import Model from '../../models/Model';
+
+const schema = {
+
+};
+
+
+class {{ properCase name }}State extends Model {
+    constructor(data) {
+        super(data, schema);
+    }
+}
+
+
+export default {{ properCase name }}State;

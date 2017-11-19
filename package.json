@@ -1,0 +1,28 @@
+{
+  "name": "generators-js",
+  "version": "1.0.0",
+  "description": "helpful generators for javascript projects",
+  "main": "index.js",
+  "scripts": {
+    "generate": "plop --plopfile ./src/generators/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "generators",
+    "javascript",
+    "automation"
+  ],
+  "jsgen": {
+    "root": "./example"
+  },
+  "author": "Andrew Grewell <andrewgrewell@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "inquirer": "4.0.0",
+    "inquirer-select-directory": "1.2.0",
+    "jscodeshift": "^0.3.32",
+    "plop": "^1.9.0",
+    "shelljs": "^0.7.8"
+  }
+}
