@@ -1,2 +1,2 @@
-import { {{ constantCase actionName }} } from './actions';
+import { {{ constantCase actionName }} } from '../{{ targetModule }}/actions';
 /*--GENERATOR INSERT ACTION TYPE--*/

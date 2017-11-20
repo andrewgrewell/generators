@@ -5,6 +5,7 @@ const validateInputName = require('../../util/validateInputName');
 const gitAdd = require('../../util/gitAdd');
 const paths = require('../../util/paths');
 const getReduxModuleNames = require('../../util/getReduxModuleNames');
+const getReduxModuleActionTypes = require('../../util/getReduxModuleActionTypes');
 const whenTypeProvider = require('../../util/whenTypeProvider');
 const parseStringList = require('../../util/parseStringList');
 const constantCase = require('../../util/constantCase');
@@ -22,7 +23,7 @@ module.exports = {
             type: 'list',
             name: 'type',
             message: 'What would you like to generate?',
-            choices: ['module', 'action', 'selector', 'reducer']
+            choices: ['module', 'action', 'reducer']
         },
         // create module
         {
@@ -85,21 +86,21 @@ module.exports = {
             name: 'createReducer',
             message: 'Would you like to create a reducer for this action?'
         },
-        // selector
-        {
-            when: whenTypeProvider('selector'),
-            type: 'input',
-            name: 'selectorName',
-            message: 'What is the module name? (lowercase letters and spaces only)',
-            validate: validateInputName
-        },
         // reducer
         {
             when: whenTypeProvider('reducer'),
-            type: 'input',
-            name: 'actionName',
-            message: 'What is the action name?',
-            validate: validateInputName
+            type: 'list',
+            name: 'reducerModule',
+            choices: getReduxModuleNames(),
+            default: (answers) => answers.targetModule,
+            message: 'Which module does the action type belong to?',
+        },
+        {
+            when: whenTypeProvider('reducer'),
+            type: 'list',
+            name: 'reducerActionName',
+            choices: (answers) => getReduxModuleActionTypes(answers.reducerModule),
+            message: 'Select the modules action type'
         },
         {
             when: (answers) => {
@@ -108,7 +109,7 @@ module.exports = {
             },
             type: 'list',
             choices: (answers) => {
-                let actionType = constantCase(answers.actionName);
+                let actionType = constantCase(answers.reducerActionName || answers.actionName);
                 return [
                     actionType,
                     `${actionType} (SUCCESS)`,
@@ -116,7 +117,7 @@ module.exports = {
                 ];
             },
             name: 'reducerActionType',
-            message: 'Select the action type for the reducer'
+            message: 'Select the action type variation for the reducer'
         },
         {
             when: (answers) => {
@@ -131,7 +132,7 @@ module.exports = {
     actions: (data) => {
         let basePath = data.basePath || getBasePath();
         let reduxPath = basePath + paths.redux;
-        let modulePath;
+        let modulePath = reduxPath + '/' + data.targetModule;
 
         let actions = [];
         if (data.name) {
@@ -141,12 +142,12 @@ module.exports = {
         }
         else if (data.actionName) {
             // create action
-            modulePath = reduxPath + '/' + data.targetModule;
             data.actionInput = parseStringList(data.actionInput);
             actions = getActionActions(modulePath);
         }
 
         if (data.reducerActionType != null) {
+            data.actionName = data.actionName || data.reducerActionName;
             if (data.reducerActionType.includes('SUCCESS')) {
                 data.reducerActionType = `successActionType(${constantCase(data.actionName)})`;
             }

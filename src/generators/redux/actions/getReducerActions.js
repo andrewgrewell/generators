@@ -1,6 +1,6 @@
+const getPathRelative = require('../../../util/getPathRelative');
 
-
-module.exports = function(modulePath) {
+module.exports = function(modulePath, targetModule) {
     return [
         {
             type: 'modify',
@@ -18,3 +18,7 @@ module.exports = function(modulePath) {
         },
     ];
 };
+
+function getPathToModule(modulePath) {
+
+}
