@@ -7,9 +7,11 @@ const paths = require('../../util/paths');
 const getReduxModuleNames = require('../../util/getReduxModuleNames');
 const whenTypeProvider = require('../../util/whenTypeProvider');
 const parseStringList = require('../../util/parseStringList');
+const constantCase = require('../../util/constantCase');
 
 const getModuleActions = require('./actions/getModuleActions');
 const getActionActions = require('./actions/getActionActions');
+const getReducerActions = require('./actions/getReducerActions');
 
 
 
@@ -74,13 +76,14 @@ module.exports = {
             when: whenTypeProvider('action'),
             type: 'input',
             name: 'actionInput',
-            message: 'Input arguments of the action'
+            message: 'Input arguments of the action (comma separated list)'
         },
         {
             when: whenTypeProvider('action'),
-            type: 'input',
-            name: 'actionOutput',
-            message: 'Return value of the action'
+            type: 'confirm',
+            default: false,
+            name: 'createReducer',
+            message: 'Would you like to create a reducer for this action?'
         },
         // selector
         {
@@ -94,28 +97,64 @@ module.exports = {
         {
             when: whenTypeProvider('reducer'),
             type: 'input',
-            name: 'name',
-            message: 'What is the module name? (lowercase letters and spaces only)',
+            name: 'actionName',
+            message: 'What is the action name?',
             validate: validateInputName
+        },
+        {
+            when: (answers) => {
+                let actionReducer = whenTypeProvider('action')(answers) && answers.createReducer;
+                return actionReducer || whenTypeProvider('reducer')(answers);
+            },
+            type: 'list',
+            choices: (answers) => {
+                let actionType = constantCase(answers.actionName);
+                return [
+                    actionType,
+                    `${actionType} (SUCCESS)`,
+                    `${actionType} (FAILURE)`
+                ];
+            },
+            name: 'reducerActionType',
+            message: 'Select the action type for the reducer'
+        },
+        {
+            when: (answers) => {
+                let actionReducer = whenTypeProvider('action')(answers) && answers.createReducer;
+                return actionReducer || whenTypeProvider('reducer')(answers);
+            },
+            type: 'editor',
+            name: 'reducerBody',
+            message: 'Open editor and enter the body of the reducer (e.g. return state.setValue(foo))'
         },
     ],
     actions: (data) => {
         let basePath = data.basePath || getBasePath();
         let reduxPath = basePath + paths.redux;
-        let templatePath = './redux/templates';
+        let modulePath;
 
         let actions = [];
         if (data.name) {
             // create module
-            let modulePath = reduxPath + '/{{ dashCase name }}/';
-            actions = getModuleActions(modulePath, templatePath);
+            modulePath = reduxPath + '/{{ dashCase name }}/';
+            actions = getModuleActions(modulePath);
         }
         else if (data.actionName) {
             // create action
-            let modulePath = reduxPath + '/' + data.targetModule;
+            modulePath = reduxPath + '/' + data.targetModule;
             data.actionInput = parseStringList(data.actionInput);
-            console.log(data.actionInput);
-            actions = getActionActions(modulePath, templatePath);
+            actions = getActionActions(modulePath);
+        }
+
+        if (data.reducerActionType != null) {
+            if (data.reducerActionType.includes('SUCCESS')) {
+                data.reducerActionType = `successActionType(${constantCase(data.actionName)})`;
+            }
+            else if (data.reducerActionType.includes('FAILURE')) {
+                data.reducerActionType = `failureActionType(${constantCase(data.actionName)})`;
+            }
+            data.reducerBody = `${data.reducerBody}`;
+            actions = actions.concat(getReducerActions(modulePath));
         }
 
         return actions.concat([gitAdd]);

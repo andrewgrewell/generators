@@ -1,11 +1,14 @@
 import { handleActions } from 'redux-actions';
 
+import successActionType from '../../util/successActionType';
+import failureActionType from '../../util/failureActionType';
 import {{ properCase name }}State from './{{ properCase name }}State';
+/*--GENERATOR INSERT ACTION TYPE--*/
 
 
 const initialState = new {{ properCase name }}State({});
 
 
 export default handleActions({
-
+/*--GENERATOR INSERT REDUCER--*/
 }, initialState);

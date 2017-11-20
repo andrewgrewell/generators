@@ -1,6 +1,7 @@
 
 
-module.exports = function getModuleActions(modulePath, templatePath) {
+module.exports = function getModuleActions(modulePath) {
+    let templatePath = './redux/templates';
     return [
         {
             type: 'add',

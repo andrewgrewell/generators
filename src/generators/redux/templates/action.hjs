@@ -1,11 +1,15 @@
 export const {{ constantCase actionName }} = `${NAME}/{{ constantCase actionName }}`;
 /**
+{{#if actionDescription}}
 * {{ actionDescription }}
+{{/if}}
 *
 {{#each actionInput}}
+{{#if this}}
 * @param {{this}}
+{{/if}}
 {{/each}}
-* @returns { {{ actionOutput }} }
+* @returns { {{#if isAsync}}Function{{else}}Object{{/if}} } - {{#if isAsync}}redux action creator{{else}}redux action{{/if}}
 */
 export function {{ camelCase actionName }}({{#each actionInput}}{{#if @index}} {{/if}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
 {{#if isAsync}}
@@ -16,9 +20,9 @@ export function {{ camelCase actionName }}({{#each actionInput}}{{#if @index}} {
         });
     };
 {{else}}
-    return createAction({{ constantCase actionName }}, arguments);
+    return createAction({{ constantCase actionName }}, { {{#each actionInput}}{{#if @index}} {{/if}}{{this}}{{#unless @last}},{{/unless}}{{/each}} });
 {{/if}}
 }
 
 
-/*--(DO NOT REMOVE)generate action here(DO NOT REMOVE)--*/
+/*--GENERATOR INSERT ACTION--*/

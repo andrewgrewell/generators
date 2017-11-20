@@ -1,0 +1,4 @@
+    [{{ reducerActionType }}]: (state, { payload }) => {
+        {{ reducerBody }}
+    },
+/*--GENERATOR INSERT REDUCER--*/
