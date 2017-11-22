@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const extractMatchesFromFile = require('./extractMatchesFromFile');
-const paths = require('./paths');
+const extractMatchesFromFile = require('../fs/extractMatchesFromFile');
+const paths = require('../path/paths');
 
 
 module.exports = function getReduxModuleActionTypes(moduleName) {

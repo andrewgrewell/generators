@@ -1,5 +1,5 @@
 /* eslint-disable no-var */
-const validateInputProvider = require('../../util/validateInputProvider');
+const validateInputProvider = require('../../util/validation/validateInputProvider');
 const gitAdd = require('../../util/gitAdd');
 
 

@@ -1,4 +1,4 @@
-const getConfig = require('./getConfig');
+const getConfig = require('../getConfig');
 const path = require('path');
 
 module.exports = function getBasePath() {

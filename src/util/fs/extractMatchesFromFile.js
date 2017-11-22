@@ -1,8 +1,8 @@
-const fs = require('fs');
+const readFileContents = require('./readFileContents');
 
 
 module.exports = function(filePath, regex) {
-    let contents = fs.readFileSync(filePath, 'utf8');
+    let contents = readFileContents(filePath);
     let extractions = [];
     let m;
     while (m = regex.exec(contents)) {

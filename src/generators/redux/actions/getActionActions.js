@@ -1,6 +1,6 @@
 
 
-module.exports = function(modulePath, templatePath) {
+module.exports = function(modulePath) {
     return [
         {
             type: 'modify',

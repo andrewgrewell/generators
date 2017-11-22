@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const paths = require('./paths');
+const paths = require('../path/paths');
 
 
 module.exports = function getReduxModuleNames() {
