@@ -1,0 +1,2 @@
+import {{ properCase name}}ReduxModule from './{{ dashCase name}}/index';
+/*--GENERATOR INSERT MODULE IMPORT--*/

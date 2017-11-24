@@ -1,6 +1,6 @@
 {
   "name": "generators-js",
-  "version": "1.0.0",
+  "version": "0.1.2",
   "description": "helpful generators for javascript projects",
   "main": "index.js",
   "scripts": {
@@ -18,10 +18,8 @@
   "author": "Andrew Grewell <andrewgrewell@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.3.0",
-    "inquirer": "4.0.0",
+    "constant-case-strings": "^2.0.0",
     "inquirer-select-directory": "1.2.0",
-    "jscodeshift": "^0.3.32",
     "lodash.zip": "^4.2.0",
     "plop": "^1.9.0",
     "shelljs": "^0.7.8"

@@ -157,7 +157,7 @@ module.exports = {
         if (data.name) {
             // create module
             modulePath = reduxPath + '/{{ dashCase name }}/';
-            actions = getModuleActions(modulePath);
+            actions = getModuleActions(modulePath, reduxPath);
         }
         else if (data.actionName) {
             // create action
@@ -178,9 +178,14 @@ module.exports = {
             }
 
             // convert action type import to a relative path for use in the template
-            data.reducerImportPath = getPathRelative(modulePath, `${reduxPath}/${data.fromModule}`);
-            if (!data.reducerImportPath.length) {
+            if (!data.fromModule) {
                 data.reducerImportPath = '.';
+            }
+            else {
+                data.reducerImportPath = getPathRelative(modulePath, `${reduxPath}/${data.fromModule}`);
+                if (!data.reducerImportPath.length) {
+                    data.reducerImportPath = '.';
+                }
             }
 
             // the reducer body comes back with a new line at the end every time

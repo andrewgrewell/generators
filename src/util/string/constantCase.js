@@ -1,7 +1,5 @@
-
+const _constCase = require('constant-case-strings');
 
 module.exports = function constantCase(string) {
-    let parts = string.split(' ');
-    string = string.toUpperCase();
-    return string.replace(' ', '_');
+    return _constCase(string);
 };

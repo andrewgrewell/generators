@@ -1,6 +1,6 @@
 
 
-module.exports = function getModuleActions(modulePath) {
+module.exports = function getModuleActions(modulePath, reduxPath) {
     let templatePath = './redux/templates';
     return [
         {
@@ -37,6 +37,20 @@ module.exports = function getModuleActions(modulePath) {
             type: 'add',
             path: modulePath + '/selectors.js',
             templateFile: templatePath + '/selectorsFile.hjs',
+            abortOnFail: true
+        },
+        {
+            type: 'modify',
+            path: reduxPath + '/index.js',
+            pattern: /\/\*--GENERATOR INSERT MODULE IMPORT--\*\//,
+            templateFile: './redux/templates/reduxModulesIndexImport.hjs',
+            abortOnFail: true
+        },
+        {
+            type: 'modify',
+            path: reduxPath + '/index.js',
+            pattern: /\/\*--GENERATOR INSERT MODULE EXPORT--\*\//,
+            templateFile: './redux/templates/reduxModulesIndexExport.hjs',
             abortOnFail: true
         }
     ];

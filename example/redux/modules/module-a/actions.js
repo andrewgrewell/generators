@@ -26,4 +26,14 @@ export function testTwo() {
 }
 
 
+export const TESTING = `${NAME}/TESTING`;
+/**
+*
+* @returns { Object } - redux action
+*/
+export function testing() {
+    return createAction(TESTING, {  });
+}
+
+
 /*--GENERATOR INSERT ACTION--*/
