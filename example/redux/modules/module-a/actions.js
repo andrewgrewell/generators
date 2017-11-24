@@ -2,37 +2,23 @@ import createAction from '../../util/createAction';
 import NAME from './name';
 
 
-export const TEST_ONE = `${NAME}/TEST_ONE`;
+export const ONE = `${NAME}/ONE`;
 /**
-* testing one two three
 *
-* @param one
-* @param two
 * @returns { Object } - redux action
 */
-export function testOne(one, two) {
-    return createAction(TEST_ONE, { one, two });
+export function one() {
+    return createAction(ONE, {  });
 }
 
 
-export const TEST_TWO = `${NAME}/TEST_TWO`;
-/**
-* testing
-*
-* @returns { Object } - redux action
-*/
-export function testTwo() {
-    return createAction(TEST_TWO, {  });
-}
-
-
-export const TESTING = `${NAME}/TESTING`;
+export const TWO = `${NAME}/TWO`;
 /**
 *
 * @returns { Object } - redux action
 */
-export function testing() {
-    return createAction(TESTING, {  });
+export function two() {
+    return createAction(TWO, {  });
 }
 
 

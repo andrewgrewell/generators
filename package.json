@@ -1,6 +1,6 @@
 {
   "name": "generators-js",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "helpful generators for javascript projects",
   "main": "index.js",
   "scripts": {

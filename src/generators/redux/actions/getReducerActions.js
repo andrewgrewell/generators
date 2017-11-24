@@ -1,7 +1,20 @@
 const getPathRelative = require('../../../util/path/getPathRelative');
 
-module.exports = function(modulePath) {
+module.exports = function(modulePath, skipImport) {
+    let importAction = {
+        type: 'modify',
+        path: modulePath + '/reducer.js',
+        pattern: /\/\*--GENERATOR INSERT REDUCER--\*\//,
+        templateFile: './redux/templates/reducer.hjs',
+        abortOnFail: true
+    };
+
+    if (skipImport) {
+        return [importAction];
+    }
+
     return [
+        importAction,
         {
             type: 'modify',
             path: modulePath + '/reducer.js',
@@ -9,16 +22,5 @@ module.exports = function(modulePath) {
             templateFile: './redux/templates/reducerActionType.hjs',
             abortOnFail: true
         },
-        {
-            type: 'modify',
-            path: modulePath + '/reducer.js',
-            pattern: /\/\*--GENERATOR INSERT REDUCER--\*\//,
-            templateFile: './redux/templates/reducer.hjs',
-            abortOnFail: true
-        },
     ];
 };
-
-function getPathToModule(modulePath) {
-
-}

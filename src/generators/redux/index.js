@@ -17,6 +17,8 @@ const checkAddMethodsToState = require('../../util/model/checkAddMethodsToState'
 const fileExists = require('../../util/fs/fileExists');
 const extractMatchesFromFile = require('../../util/fs/extractMatchesFromFile');
 const extractMatchesFromString = require('../../util/string/extractMatchesFromString');
+const filterOutTypes = require('../../util/filter/filterOutTypes');
+const checkAddReducerTypeImport = require('../../util/redux/checkAddReducerTypeImport');
 
 const getModuleActions = require('./actions/getModuleActions');
 const getActionActions = require('./actions/getActionActions');
@@ -192,11 +194,18 @@ module.exports = {
             // TODO: verify this isn't editor specific (vim in my case)
             data.reducerBody = data.reducerBody.slice(0, data.reducerBody.length - 1);
 
+            // check if an action type is already imported from reducerImportPath
+            // if so add it to the structured imports instead of as a new import
+            let skipImport = checkAddReducerTypeImport({
+                modulePath,
+                pathToActionType: data.reducerImportPath,
+                actionTypeName: data.actionName
+            });
             // check the methods in the reducer body exist in state, if not add them
             let calls = extractMatchesFromString(data.reducerBody, /\.([a-z]+)(\w+)\(([a-zA-Z0-9,\s]+)\)/g);
             checkAddMethodsToState(data.targetModule, modulePath, calls);
             data.payloadBody = getReducerPayload(calls);
-            actions = actions.concat(getReducerActions(modulePath));
+            actions = actions.concat(getReducerActions(modulePath, skipImport));
         }
 
         return actions.concat([gitAdd]);
@@ -208,7 +217,7 @@ function getReducerPayload(calls) {
         // calls is an array in the form [accessor, name, args]
         let args = call[2];
         if (args) {
-            return result.concat(parseStringList(args));
+            return result.concat(filterOutTypes(parseStringList(args)));
         }
         return result;
     }, []);
@@ -225,7 +234,7 @@ function validateActionType(answers) {
         return;
     }
     let { modulePath } = getPaths(answers);
-    let actionTypeRegex = new RegExp(`(${answers.reducerActionType.split(' ')[0]})`, 'g');
+    let actionTypeRegex = new RegExp(`({ ${answers.reducerActionType.split(' ')[0]} })`, 'g');
     let matches = extractMatchesFromFile(`${modulePath}/reducer.js`, actionTypeRegex);
     if (matches && matches.length) {
         throw new Error('Action type already present in reducer');

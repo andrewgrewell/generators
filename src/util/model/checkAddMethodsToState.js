@@ -7,6 +7,7 @@ const lowerFirst = require('../string/lowerFirst');
 const getPositionInString = require('../string/getPositionInString');
 const insertIntoString = require('../string/insertIntoString');
 const writeFile = require('../fs/writeFile');
+const filterOutTypes = require('../filter/filterOutTypes');
 
 
 module.exports = function(targetModule, modulePath, calls) {
@@ -44,11 +45,11 @@ function stringifyMethod(property, accessorType, args) {
     else {
         accessorString = `this.${lowerFirst(property)}`;
     }
-    return `\n\t${methodName}(${args}) {\n\t\treturn ${accessorString};\n\t}\n`;
+    return `\n\t${methodName}(${filterOutTypes(parseStringList(args)).join(', ')}) {\n\t\treturn ${accessorString};\n\t}\n`;
 }
 
 function methodExists(property, accessorType, stateContents) {
     let methodName = accessorType + upperFirst(property);
-    let regex = new RegExp(methodName, 'g');
+    let regex = new RegExp(`${methodName}\\(`, 'g');
     return regex.test(stateContents);
 }

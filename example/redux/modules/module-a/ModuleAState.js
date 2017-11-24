@@ -1,4 +1,4 @@
-import Model from '../../models/Model';
+import Model from '../../../models/Model';
 
 const schema = {
 
@@ -10,12 +10,8 @@ class ModuleAState extends Model {
         super(data, schema);
     }
 
-	setBar(value2) {
-		return this.set('bar', value2);
-	}
-
-	setFoo(bar) {
-		return this.set('foo', bar);
+	setFoo() {
+		return this.set('foo', true);
 	}
 }
 
