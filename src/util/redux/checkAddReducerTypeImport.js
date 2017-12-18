@@ -6,8 +6,13 @@ const getPositionInString = require('../string/getPositionInString');
 const constantCase = require('../string/constantCase');
 
 module.exports = function checkAddReducerTypeImport({ modulePath, pathToActionType, actionTypeName }) {
-    // check in the reducer file for any import matching reducer
     let reducerPath = `${modulePath}/reducer.js`;
+    // check if the actionType is already imported
+    let actionTypeMatches = extractMatchesFromFile(reducerPath, new RegExp(actionTypeName, 'g'));
+    if (actionTypeMatches && actionTypeMatches.length) {
+        return true;
+    }
+    // check in the reducer file for any import matching reducer
     let re = new RegExp(`'\\${pathToActionType}/actions[.js]*';`, 'g');
     let matches = extractMatchesFromFile(reducerPath, re);
     console.log('matches: ', reducerPath, re, matches);

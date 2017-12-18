@@ -22,4 +22,14 @@ export function two() {
 }
 
 
+export const DO_STUFF = `${NAME}/DO_STUFF`;
+/**
+*
+* @returns { Object } - redux action
+*/
+export function doStuff() {
+    return createAction(DO_STUFF, {  });
+}
+
+
 /*--GENERATOR INSERT ACTION--*/

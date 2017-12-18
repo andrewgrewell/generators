@@ -10,6 +10,10 @@ class ModuleAState extends Model {
         super(data, schema);
     }
 
+	setStuff() {
+		return this.set('stuff', true);
+	}
+
 	setFoo() {
 		return this.set('foo', true);
 	}
