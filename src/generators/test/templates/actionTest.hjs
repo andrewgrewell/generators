@@ -1,0 +1,37 @@
+import MockStore from '{{mockStorePath}}';
+
+{{#if existingActionNames}}
+import {
+{{#each existingActionNames}}
+    {{this}},
+{{/each}}
+} from '../actions';
+{{/if}}
+
+
+describe('{{testName}}', () => {
+
+    let store = new MockStore();
+
+    beforeEach(() => {
+        store.resetStore();
+    });
+
+    {{#if existingActionNames}}
+    {{#each existingActionNames}}
+    // action: {{this}}
+    it('handles {{this}} success', async () => {
+        // mock implementation of action to resolve
+        await store.dispatch({{this}}());
+        expect(store.getActions()).toMatchSnapshot();
+    });
+
+    it('handles {{this}} failure', async () => {
+        // mock implementation of action to reject
+        await store.dispatch({{this}}());
+        expect(store.getActions()).toMatchSnapshot();
+    });
+
+    {{/each}}
+    {{/if}}
+});

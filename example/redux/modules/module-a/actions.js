@@ -5,7 +5,7 @@ import NAME from './name';
 export const ONE = `${NAME}/ONE`;
 /**
 *
-* @returns { Object } - redux action
+* @returns { Function } - redux action create
 */
 export function one() {
     return createAction(ONE, {  });
@@ -29,6 +29,20 @@ export const DO_STUFF = `${NAME}/DO_STUFF`;
 */
 export function doStuff() {
     return createAction(DO_STUFF, {  });
+}
+
+export const UPDATE_RECIPE = `${NAME}/UPDATE_RECIPE`;
+/**
+ * update a recipe
+ *
+ * @param recipe
+ * @returns { Function } - redux action creator
+ */
+export function updateRecipe(recipe) {
+    return (dispatch, getState, { fetch }) => {
+        // TODO update this to hit the backend
+        return dispatch(createAction(successActionType(UPDATE_RECIPE), { recipe }));
+    };
 }
 
 

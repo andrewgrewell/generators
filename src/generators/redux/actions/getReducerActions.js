@@ -1,7 +1,7 @@
 const getPathRelative = require('../../../util/path/getPathRelative');
 
 module.exports = function(modulePath, skipImport) {
-    let importAction = {
+    let reducerAction = {
         type: 'modify',
         path: modulePath + '/reducer.js',
         pattern: /\/\*--GENERATOR INSERT REDUCER--\*\//,
@@ -10,11 +10,11 @@ module.exports = function(modulePath, skipImport) {
     };
 
     if (skipImport) {
-        return [importAction];
+        return [reducerAction];
     }
 
     return [
-        importAction,
+        reducerAction,
         {
             type: 'modify',
             path: modulePath + '/reducer.js',

@@ -1,17 +1,16 @@
+const getPaths = require('./getPaths');
 
-const getBasePath = require('./getBasePath');
-
-const basePath = getBasePath();
+// TODO make this configurable via package.json
 module.exports = {
-    base: basePath,
+    base: getPaths().src,
     redux: `/redux/modules`,
     components: `/components`,
     container: `/app`,
     models: `/models`,
     constants: `/constants`,
-    theme: `/theme`,
+    styles: `/styles`,
     enums: `/enums`,
     api: `/api`,
-    util: `/utils`,
+    util: `/util`,
     providers: `/providers`,
 };

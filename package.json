@@ -1,6 +1,6 @@
 {
   "name": "generators-js",
-  "version": "0.2.0",
+  "version": "0.2.4",
   "description": "helpful generators for javascript projects",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,10 @@
     "automation"
   ],
   "jsgen": {
-    "root": "./example"
+    "paths": {
+      "src": "./example",
+      "mockStore": "./example/internals/MockStore.js"
+    }
   },
   "author": "Andrew Grewell <andrewgrewell@gmail.com>",
   "license": "MIT",
