@@ -73,11 +73,19 @@ module.exports = {
         else if (isConnectedComponentFile(fileContents)) {
             console.log('--- file is connected component');
         }
+        else if (isStatefulComponentFile(fileContents)) {
+            data.componentName = properCase(fileName.replace('.js', ''));
+            actions = [
+                {
+                    type: 'add',
+                    path: testFilePath,
+                    templateFile: './test/templates/statefulComponentTest.hjs',
+                    abortOnFail: true
+                }
+            ];
+        }
         else if (isStatelessComponentFile(fileContents)) {
             console.log('--- file is stateless component');
-        }
-        else if (isStatefulComponentFile(fileContents)) {
-            console.log('--- file is stateful component');
         }
         else {
             console.log('adding general test file to', testFilePath);
@@ -107,6 +115,9 @@ function isStatelessComponentFile(contents) {
 }
 
 function isStatefulComponentFile(contents) {
+    if (/export default [\w\s]*\(.*\)/gmi.test(contents)) {
+        return false;
+    }
     return /const \w+ = createReactClass\({/gmi.test(contents)
         || /class \w+ extends/gmi.test(contents);
 }
