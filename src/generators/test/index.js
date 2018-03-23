@@ -39,52 +39,56 @@ module.exports = {
             when: ({ fileName }) => fileName === 'custom',
             type: 'input',
             name: 'customFileName',
-            message: 'What is the file name? (excluding file extension)',
-            validate: validateInputName
+            message: 'What is the file name?',
+            validate: (name) => !!name
         }
     ],
     actions: (data) => {
         let actions = [];
         let { basePath, fileName, customFileName } = data;
+        fileName = customFileName || fileName;
         let testFilePath = `${basePath}/__tests__`;
         data.mockStorePath = getPathRelative(testFilePath, getPaths().mockStore);
-        if (customFileName) {
-            testFilePath += `/${properCase(customFileName)}.js`;
+        let filePath = `${basePath}/${fileName}`;
+        let fileContents = '';
+        if (!customFileName) {
+            fileContents = readFileContents(filePath);
+        }
+        testFilePath += `/${fileName}`;
+        data.testName = buildTestName(filePath);
+        if (isActionFile(fileContents) || fileName === 'actions.js') {
+            data.existingActionNames = extractMatchesFromFile(filePath, /export function (\w+)\(.*\)/gim);
+            actions = [
+                {
+                    type: 'add',
+                    path: testFilePath,
+                    templateFile: './test/templates/actionTest.hjs',
+                    abortOnFail: true
+                }
+            ];
+        }
+        else if (isReducerFile(fileContents) || fileName === 'reducer.js') {
+            console.log('--- file is reducer');
+        }
+        else if (isConnectedComponentFile(fileContents)) {
+            console.log('--- file is connected component');
+        }
+        else if (isStatelessComponentFile(fileContents)) {
+            console.log('--- file is stateless component');
+        }
+        else if (isStatefulComponentFile(fileContents)) {
+            console.log('--- file is stateful component');
         }
         else {
-            let filePath = `${basePath}/${fileName}`;
-            let fileContents = readFileContents(filePath);
-            testFilePath += `/${fileName}`;
-            data.testName = buildTestName(filePath);
-
-            if (isActionFile(fileContents) || fileName === 'actions.js') {
-                data.existingActionNames = extractMatchesFromFile(filePath, /export function (\w+)\(.*\)/gim);
-                console.log('existing action names: ', data.existingActionNames);
-                actions = [
-                    {
-                        type: 'add',
-                        path: testFilePath,
-                        templateFile: './test/templates/actionTest.hjs',
-                        abortOnFail: true
-                    }
-                ];
-            }
-            else if (isReducerFile(fileContents) || fileName === 'reducer.js') {
-                console.log('--- file is reducer');
-            }
-            else if (isConnectedComponentFile(fileContents)) {
-                console.log('--- file is connected component');
-            }
-            else if (isStatelessComponentFile(fileContents)) {
-                console.log('--- file is stateless component');
-            }
-            else if (isStatefulComponentFile(fileContents)) {
-                console.log('--- file is stateful component');
-            }
-            else {
-                console.log('--- file is unknown');
-            }
-
+            console.log('adding general test file to', testFilePath);
+            actions = [
+                {
+                    type: 'add',
+                    path: testFilePath,
+                    templateFile: './test/templates/generalTest.hjs',
+                    abortOnFail: true
+                }
+            ];
         }
         return actions.concat([gitAdd]);
     }

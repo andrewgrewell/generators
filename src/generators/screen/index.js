@@ -4,7 +4,7 @@ const gitAdd = require('../../util/gitAdd');
 
 
 module.exports = {
-    description: 'Generator prompt here',
+    description: 'Screen Generator',
     prompts: [
         // {
         //     type: 'input',
